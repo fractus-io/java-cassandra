@@ -1,30 +1,33 @@
-package io.fractus.cassandra.client;
+/**
+ * 
+ * Copyright (c) 2017 Fractus IT d.o.o. <http://fractus.io>
+ * 
+ */
+package io.fractus.cassandra.client.java;
 
 import java.util.List;
 
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.utils.UUIDs;
 
-import io.fractus.cassandra.client.connector.CassandraConnector;
-import io.fractus.cassandra.client.connector.CassandraTemplate;
-import io.fractus.cassandra.client.dao.BookDao;
-import io.fractus.cassandra.client.dao.IBookDao;
-import io.fractus.cassandra.client.model.Book;
+import io.fractus.cassandra.client.java.connector.CassandraConnector;
+import io.fractus.cassandra.client.java.connector.CassandraTemplate;
+import io.fractus.cassandra.client.java.dao.BookDao;
+import io.fractus.cassandra.client.java.dao.IBookDao;
+import io.fractus.cassandra.client.java.model.Book;
 
 public class CassandraDemo {
 
   public static void main(String[] args) {
     
     String keyspaceName = "library";
-    
-    System.out.println("here we go");
-    
+       
+    // connect to cassandra cluster
     CassandraConnector cassandraConnector = new CassandraConnector();
     Session session = cassandraConnector.connect("127.0.0.1", null);
     
     System.out.println("connected to cassandra cluster ");
     
-    // connect to cassandra cluster
     CassandraTemplate cassandraTemplate = new CassandraTemplate(session);
     
     // create library keyspace -> in fact keyspace is container
@@ -34,7 +37,7 @@ public class CassandraDemo {
     // create table book
     cassandraTemplate.createTableBook();
 
-    // prepare book
+    // prepare book object
     Book book = new Book();
     book.setId(UUIDs.timeBased());
     book.setAuthor("author");
@@ -49,7 +52,13 @@ public class CassandraDemo {
     bookDao.insert(book);
     
     List<Book> books = bookDao.findAll();
-    System.out.println(books);
+    for (Book aBook : books) {
+      System.out.println(aBook.getId());
+      System.out.println(aBook.getAuthor());
+      System.out.println(aBook.getTitle());
+      System.out.println(aBook.getSubject());
+      System.out.println(aBook.getPublisher());
+    }
     
     // delete keyspace
     cassandraTemplate.deleteKeyspace(keyspaceName);

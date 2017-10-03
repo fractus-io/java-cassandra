@@ -1,4 +1,9 @@
-package io.fractus.cassandra.client.dao;
+/**
+ * 
+ * Copyright (c) 2017 Fractus IT d.o.o. <http://fractus.io>
+ * 
+ */
+package io.fractus.cassandra.client.java.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +12,7 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 
-import io.fractus.cassandra.client.model.Book;
+import io.fractus.cassandra.client.java.model.Book;
 
 public class BookDao  implements IBookDao {
 
@@ -29,7 +34,7 @@ public class BookDao  implements IBookDao {
                             .append("', '")
                             .append(book.getSubject())
                             .append("', '")
-                            .append(book.getSubject())
+                            .append(book.getPublisher())
                             .append("');");
 
      final String query = sb.toString();

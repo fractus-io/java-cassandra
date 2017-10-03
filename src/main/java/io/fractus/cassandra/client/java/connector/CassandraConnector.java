@@ -1,4 +1,9 @@
-package io.fractus.cassandra.client.connector;
+/**
+ * 
+ * Copyright (c) 2017 Fractus IT d.o.o. <http://fractus.io>
+ * 
+ */
+package io.fractus.cassandra.client.java.connector;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
