@@ -16,8 +16,10 @@ public class CassandraConnector {
 
   private static final Logger LOG = LoggerFactory.getLogger(CassandraConnector.class);
   
+  // Cluster is an main entry point of the driver.
   private Cluster cluster;
   
+  // @return Session, A session (com.datastax.driver.core.Session) holds connections to a Cassandra cluster,  allowing it to be queried.
   public Session connect(final String node, final Integer port) {
     
     try {

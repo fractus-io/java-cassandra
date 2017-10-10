@@ -48,11 +48,11 @@ public class BookDao  implements IBookDao {
     StringBuilder sb = new StringBuilder("SELECT * FROM BOOK");
 
     final String query = sb.toString();
-    ResultSet rs = session.execute(query);
+    ResultSet resultSet = session.execute(query);
 
     List<Book> books = new ArrayList<Book>();
 
-    for (Row r : rs) {
+    for (Row r : resultSet) {
         Book book = new Book();
         book.setId(r.getUUID("id"));
         book.setTitle(r.getString("title"));
