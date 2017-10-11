@@ -7,12 +7,12 @@ package io.fractus.cassandra.client.java.dao;
 
 import java.util.List;
 
-import io.fractus.cassandra.client.java.model.Book;
+import io.fractus.cassandra.client.java.model.Person;
 
-public interface IBookDao {
+public interface IPersonDao {
 
-  public void insert(Book book);
+  public void insert(Person person);
   
-  public List<Book> findAll();
+  public List<Person> findAll();
   
 }

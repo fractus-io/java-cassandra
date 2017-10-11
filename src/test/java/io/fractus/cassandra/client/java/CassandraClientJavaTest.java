@@ -23,14 +23,14 @@ import com.datastax.driver.core.Session;
 import com.datastax.driver.core.utils.UUIDs;
 
 import io.fractus.cassandra.client.java.connector.CassandraConnector;
-import io.fractus.cassandra.client.java.dao.BookDao;
-import io.fractus.cassandra.client.java.dao.IBookDao;
-import io.fractus.cassandra.client.java.model.Book;
+import io.fractus.cassandra.client.java.dao.PersonDao;
+import io.fractus.cassandra.client.java.dao.IPersonDao;
+import io.fractus.cassandra.client.java.model.Person;
 
 public class CassandraClientJavaTest {
   
   private Session session;
-  private IBookDao bookDao;
+  private IPersonDao personDao;
   
   @BeforeClass
   public static void init() throws ConfigurationException, TTransportException, IOException, InterruptedException {
@@ -45,41 +45,39 @@ public class CassandraClientJavaTest {
     CassandraConnector cassandraConnector = new CassandraConnector();
     this.session = cassandraConnector.connect("localhost", 9142);
    
-    this.session.execute("CREATE KEYSPACE IF NOT EXISTS library WITH replication = {'class':'SimpleStrategy','replication_factor':1};");
-    this.session.execute("USE library;");
-    this.session.execute("CREATE TABLE IF NOT EXISTS BOOK (id uuid PRIMARY KEY, title text, author text, subject text, publisher text);");
+    this.session.execute("CREATE KEYSPACE IF NOT EXISTS archive WITH replication = {'class':'SimpleStrategy','replication_factor':1};");
+    this.session.execute("USE archive;");
+    this.session.execute("CREATE TABLE IF NOT EXISTS PERSON (id uuid PRIMARY KEY, firstName text, familyName text, age int);");
     
     // initialize IBookDao
-    this.bookDao = new BookDao(session);
+    this.personDao = new PersonDao(session);
   }
   
   
   @Test
-  public void testBook() {
+  public void testCRUDPerson() {
 
     // prepare book object
-    Book book = new Book();
-    book.setId(UUIDs.timeBased());
-    book.setAuthor("author");
-    book.setTitle("title");
-    book.setSubject("subject");
-    book.setPublisher("publisher");
+    Person person = new Person();
+    person.setId(UUIDs.timeBased());
+    person.setFirstName("firstName");
+    person.setFamilyName("familyName");
+    person.setAge(99);
         
-    // insert into book table
-    bookDao.insert(book);
+    // insert into person table
+    personDao.insert(person);
     
-    List<Book> books = bookDao.findAll();
-    for (Book aBook : books) {
-      assertEquals("author", aBook.getAuthor());
-      assertEquals("title", aBook.getTitle());
-      assertEquals("subject", aBook.getSubject());
-      assertEquals("publisher", aBook.getPublisher());
+    List<Person> persons = personDao.findAll();
+    for (Person aPerson : persons) {
+      assertEquals("firstName", aPerson.getFirstName());
+      assertEquals("familyName", aPerson.getFamilyName());
+      assertEquals(99, aPerson.getAge());
     }
   }
   
   @After
   public void after() {
-    this.session.execute("DROP KEYSPACE library;");
+    this.session.execute("DROP KEYSPACE archive;");
   }
   
   @AfterClass
